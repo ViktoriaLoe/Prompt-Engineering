@@ -2,21 +2,18 @@ import { useAppContext } from '../context/AppContext';
 import 'daisyui/dist/full.css';
 
 const PromptList = () => {
-  const { setPrompt, setPromptName, prompts } = useAppContext();
+  const { setPrompt, allPrompts } = useAppContext();
 
   return (
     <div>
       <h2 className="text-lg font-bold">Prompts</h2>
-      {Object.keys(prompts).map((name) => (
-        <div key={name} className="flex justify-between items-center">
+      {allPrompts.map((promptItem) => (
+        <div key={promptItem.promptName} className="flex justify-between items-center">
           <button
             className="btn btn-link"
-            onClick={() => {
-              setPrompt(prompts[name]);
-              setPromptName(name);
-            }}
+            onClick={() => setPrompt(promptItem)}
           >
-            {name}
+            {promptItem.promptName}
           </button>
         </div>
       ))}

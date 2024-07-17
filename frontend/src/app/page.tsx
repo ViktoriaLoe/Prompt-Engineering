@@ -1,44 +1,65 @@
-import Input from './components/Input';
-import PromptTextArea from './components/PromptList';
-import PromptList from './components/PromptList';
-import ResultDisplay from './components/ResultDisplay';
-// import TokenInfo from './components/TokenInfo';
-import { useAppContext } from './context/AppContext';
-import 'daisyui/dist/full.css';
+"use client";
+import Input from "./components/Input";
+import PromptTextArea from "./components/PromptTextArea";
+import PromptList from "./components/PromptList";
+import ResultDisplay from "./components/ResultDisplay";
+import TokenInfo from "./components/TokenInfo";
+import { useAppContext } from "./context/AppContext";
+import { tokens } from "../../types";
+import DataList from "./components/DataList";
 
 const Home = () => {
-  const { application, prompt, promptName, instructions, setResult, setInstructions } = useAppContext();
+  const { application, prompt, result, setResult, setTokens } = useAppContext();
 
   const handleSubmit = async () => {
-    const response = await fetch('/api/submitPrompt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ promptName, text: application, instructions }), // add set tokenss
-    });
+    try {
+      const response = await fetch("/api/submitPrompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt, data: application }),
+      });
 
-    const result = await response.json();
-    setResult(result.response);
-    // setTokens(result.tokens);
+      const result = await response.json();
+      if (response.ok) {
+        setResult(result.response);
+        setTokens(result.tokens as tokens); // Type assertion to ensure correct type
+      } else {
+        console.error(result.error || "Failed to process the prompt");
+      }
+    } catch (error) {
+      console.error("Failed to process the prompt", error);
+    }
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">Prompt Engineering: Anonymiser og rydd opp i transkripsjoner</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <aside>
+    <div className="mt-12">
+      <div className="flex flex-col lg:flex-row gap-4">
+        <div className="w-full lg:w-1/6">
           <PromptList />
-        </aside>
-        <main className="col-span-2 space-y-4">
-          <Input />
-          <PromptTextArea />
+          <DataList />
+        </div>
+        <div className="flex-1 lg:w-5/6 space-y-4">
+          <h3 className="text-4xl font-bold">Prompt Engineering Tool</h3>
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="flex-1">
+              <PromptTextArea />
+            </div>
+            <div className="flex-1">
+              <Input />
+            </div>
+          </div>
           <button className="btn btn-primary" onClick={handleSubmit}>
-            Submit
+            Submit prompt
           </button>
-          <ResultDisplay />
-          {/* <TokenInfo /> */}
-        </main>
+          {result && (
+            <div className="mt-4">
+              <ResultDisplay />
+              <TokenInfo />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

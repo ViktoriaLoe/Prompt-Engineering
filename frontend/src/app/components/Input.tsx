@@ -1,16 +1,19 @@
-import { useAppContext } from '../context/AppContext';
-import 'daisyui/dist/full.css';
+import { useAppContext } from "../context/AppContext";
+import "daisyui/dist/full.css";
 
 const Input = () => {
-  const { application, setApplication } = useAppContext();
+  const { mockdata, setMockdata } = useAppContext();
 
   return (
-    <textarea
-      className="textarea textarea-bordered w-full h-60"
-      placeholder="Skriv inn transkripsjon her"
-      value={application}
-      onChange={(e) => setApplication(e.target.value)}
-    />
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Input data</h1>
+      <textarea
+        className="textarea textarea-bordered w-full h-80"
+        placeholder="Velg data til å kjøre prompten på"
+        value={mockdata.mockdataText}
+        onChange={(e) => setMockdata({ ...mockdata, mockdataText: e.target.value })}
+      />
+    </div>
   );
 };
 

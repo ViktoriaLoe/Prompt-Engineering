@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { promptName, text, instructions } = await req.json();
-    
-    const response = await fetch('http://your-backend-url/submit_prompt', {
-      method: 'POST',
+    const { prompt, data } = await req.json();
+
+    if (!prompt || !data) {
+      return NextResponse.json({ error: "Prompt and data are required" }, { status: 400 });
+    }
+
+    const response = await fetch("http://127.0.0.1:5000/submit_prompt", {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json',
       },

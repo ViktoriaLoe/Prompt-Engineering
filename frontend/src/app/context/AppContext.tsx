@@ -1,20 +1,22 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+"use client";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { tokens, prompt, mockdata } from "../../../types";
 
 interface AppContextProps {
   application: string;
   setApplication: (value: string) => void;
-  prompt: string;
-  setPrompt: (value: string) => void;
-  promptName: string;
-  setPromptName: (value: string) => void;
+  prompt: prompt;
+  setPrompt: (value: prompt) => void;
+  allPrompts: prompt[];
+  setAllPrompts: (value: prompt[]) => void;
+  mockdata: mockdata;
+  setMockdata: (value: mockdata) => void;
+  allMockdata: mockdata[];
+  setAllMockdata: (value: mockdata[]) => void;
   result: string;
   setResult: (value: string) => void;
-  instructions: string;
-  setInstructions: (value: string) => void;
-  prompts: Record<string, string>;
-  setPrompts: (value: Record<string, string>) => void;
-  mockdata: Record<string, string>;
-  setMockdata: (value: Record<string, string>) => void;
+  tokens: tokens | null;
+  setTokens: (value: tokens) => void;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -28,25 +30,25 @@ export const useAppContext = () => {
 };
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [application, setApplication] = useState('');
-  const [prompt, setPrompt] = useState('');
-  const [promptName, setPromptName] = useState('default');
-  const [result, setResult] = useState('');
-  const [instructions, setInstructions] = useState('');
-  const [prompts, setPrompts] = useState<Record<string, string>>({});
-  const [mockdata, setMockdata] = useState<Record<string, string>>({});
+  const [application, setApplication] = useState("");
+  const [prompt, setPrompt] = useState<prompt>({ promptName: "", promptText: "" });
+  const [result, setResult] = useState("");
+  const [allPrompts, setAllPrompts] = useState<prompt[]>([]);
+  const [mockdata, setMockdata] = useState<mockdata>({ mockdataName: "", mockdataText: "" });
+  const [allMockdata, setAllMockdata] = useState<mockdata[]>([]);
+  const [tokens, setTokens] = useState<tokens | null>(null);
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      const response = await fetch('/api/get_prompts');
+      const response = await fetch("/api/get_prompts");
       const data = await response.json();
-      setPrompts(data);
+      setAllPrompts(data);
     };
 
     const fetchMockdata = async () => {
-      const response = await fetch('/api/get_mockdata');
+      const response = await fetch("/api/get_mockdata");
       const data = await response.json();
-      setMockdata(data);
+      setAllMockdata(data);
     };
 
     fetchPrompts();
@@ -54,7 +56,24 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ application, setApplication, prompt, setPrompt, promptName, setPromptName, result, setResult, instructions, setInstructions, prompts, setPrompts, mockdata, setMockdata }}>
+    <AppContext.Provider
+      value={{
+        application,
+        setApplication,
+        prompt,
+        setPrompt,
+        allPrompts,
+        setAllPrompts,
+        mockdata,
+        setMockdata,
+        allMockdata,
+        setAllMockdata,
+        result,
+        setResult,
+        tokens,
+        setTokens,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
