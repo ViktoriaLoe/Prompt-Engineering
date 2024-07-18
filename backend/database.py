@@ -1,13 +1,15 @@
 import os
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
+from dotenv import load_dotenv, find_dotenv
 
+load_dotenv(find_dotenv())
 # MongoDB connection URI
-mongo_uri = os.getenv("MONGO_URI")
-client = MongoClient(mongo_uri)
+MONGO_URI = os.getenv("MONGO_URI")
+client = MongoClient(MONGO_URI)
 
 # Connect to the database and collection
-db = client.prompt_engineering_test
+db = client["prompt_engineering_test"]
 users_collection = db.mockdata
 
 try:
