@@ -1,4 +1,5 @@
 import os
+from flask import Flask, jsonify
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv, find_dotenv
@@ -12,17 +13,15 @@ client = MongoClient(MONGO_URI)
 db = client["prompt_engineering_test"]
 users_collection = db.mockdata
 
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
 
-cursor = users_collection.find({"name": "mock1"})
-for document in cursor:
-    print(document)
-client.close()
+def close_connection():
+    client.close()
 
+def get_database():
+    db = client["prompt_engineering_test"]
+    users_collection = db.mockdata
+    return users_collection
+    
 # Fetch and print the names of all users
 def get_user_names():
     try:

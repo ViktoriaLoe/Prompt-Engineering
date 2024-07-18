@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { prompt, data } = await req.json();
+    const { promptName, text, instructions } = await req.json();
 
-    if (!prompt || !data) {
-      return NextResponse.json({ error: "Prompt and data are required" }, { status: 400 });
+    if (!promptName || !text || !instructions) {
+      return NextResponse.json({ error: "promptName, text, and instructions are required" }, { status: 400 });
     }
 
     const response = await fetch("http://127.0.0.1:5000/submit_prompt", {

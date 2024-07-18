@@ -4,6 +4,8 @@ from langchain_openai import AzureChatOpenAI
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from backend.database import get_database
+
 
 load_dotenv(find_dotenv())
 
@@ -11,7 +13,21 @@ load_dotenv(find_dotenv())
 app = Flask(__name__)
 CORS(app) 
 
-
+@app.route('/get-all-data', methods=['GET'])
+def get_all_data():
+    try:
+        # Fetch all documents in the collection
+        users_collection = get_database()
+        cursor = users_collection.find({}, {"_id": 1, "name": 1, "data": 1})
+        data = []
+        for document in cursor:
+            document['_id'] = str(document['_id'])  # Convert ObjectId to string for JSON serialization
+            data.append(document)
+        print(jsonify(data))
+        return jsonify(data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 # LLM client
 llm = AzureChatOpenAI(
     openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
@@ -22,15 +38,10 @@ llm = AzureChatOpenAI(
 # Support functions
 def call_OpenAI(prompt, data):
     # print("running with prompt", prompt_name)
-    if instructions:
-        print("running with custom instructions, not saved", prompt_name)
-        prompt = prompts[prompt_name].format(data=data, instructions=instructions)
-    else:
-        prompt = prompts[prompt_name].format(data=data, instructions=instructions or "")
-    prompt = replace_back_special_chars(prompt)
-    result = llm.invoke(prompt)
+    result = llm.invoke(prompt, data)
     tokens = result.response_metadata["token_usage"] 
     return result.content, tokens
+
 
 # Routes
 @app.route('/submit_prompt', methods=['POST'])
