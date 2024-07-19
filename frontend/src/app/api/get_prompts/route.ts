@@ -1,24 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
 
-export async function POST(req: Request) {
+export async function GET() {
   try {
-    const { promptName, text, instructions } = await req.json();
+    const database_name = 'prompt_engineering_test'; // Replace with your database name
+    const collection_name = 'prompts'; // Replace with your collection name
 
-    if (!promptName || !text || !instructions) {
-      return NextResponse.json({ error: "promptName, text, and instructions are required" }, { status: 400 });
+    const response = await fetch(`http://127.0.0.1:5000/get-all-data?database_name=${database_name}&collection_name=${collection_name}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`);
     }
-
-    const response = await fetch("http://127.0.0.1:5000/submit_prompt", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ promptName, text, instructions }),
-    });
-
-    const result = await response.json();
-    return NextResponse.json(result);
+    const data = await response.json();
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to process the prompt' }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

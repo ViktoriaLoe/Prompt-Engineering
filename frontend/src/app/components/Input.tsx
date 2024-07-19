@@ -3,7 +3,7 @@ import "daisyui/dist/full.css";
 
 const Input = () => {
   const { mockdata, setMockdata } = useAppContext();
-  console.log(mockdata)
+  
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Input data</h1>

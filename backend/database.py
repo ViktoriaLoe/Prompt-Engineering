@@ -17,9 +17,9 @@ users_collection = db.mockdata
 def close_connection():
     client.close()
 
-def get_database():
-    db = client["prompt_engineering_test"]
-    users_collection = db.mockdata
+def get_database(database_name, collection_name):
+    db = client[database_name]
+    users_collection = db[collection_name]
     return users_collection
     
 # Fetch and print the names of all users

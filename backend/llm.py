@@ -13,11 +13,19 @@ load_dotenv(find_dotenv())
 app = Flask(__name__)
 CORS(app) 
 
+# GET DATA FROM DATABASE
 @app.route('/get-all-data', methods=['GET'])
 def get_all_data():
     try:
         # Fetch all documents in the collection
-        users_collection = get_database()
+        database_name = request.args.get('database_name')
+        collection_name = request.args.get('collection_name')
+
+        if not database_name or not collection_name:
+            return jsonify({"error": "Missing database_name or collection_name parameter"}), 400
+
+        users_collection = get_database(database_name, collection_name)
+
         cursor = users_collection.find({}, {"_id": 1, "name": 1, "data": 1})
         data = []
         for document in cursor:
