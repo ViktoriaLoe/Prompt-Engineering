@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { promptName, text, instructions } = await req.json();
+    const { prompt, mockdata } = await req.json();
 
-    if (!promptName || !text || !instructions) {
-      return NextResponse.json({ error: "promptName, text, and instructions are required" }, { status: 400 });
+    if (!prompt || !mockdata) {
+      return NextResponse.json({ error: "Prompt and mockdata are required" }, { status: 400 });
     }
 
     const response = await fetch("http://localhost:1234/submit_prompt", {
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ promptName, text, instructions }),
+      body: JSON.stringify({ prompt: prompt.promptText, data: mockdata.data }), // Ensure the payload matches the backend expectation
     });
 
     const result = await response.json();

@@ -9,29 +9,30 @@ import { tokens } from "../../types";
 import DataList from "./components/List/DataList";
 
 const Home = () => {
-  const { application, prompt, result, setResult, setTokens } = useAppContext();
+  const { mockdata, prompt, result, setResult, setTokens } = useAppContext();
 
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch("/api/submitPrompt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt, data: application }),
-      });
+const handleSubmit = async () => {
+  try {
+    const response = await fetch("/api/submit_prompt", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt, mockdata }),
+    });
 
-      const result = await response.json();
-      if (response.ok) {
-        setResult(result.response);
-        setTokens(result.tokens as tokens); // Type assertion to ensure correct type
-      } else {
-        console.error(result.error || "Failed to process the prompt");
-      }
-    } catch (error) {
-      console.error("Failed to process the prompt", error);
+    const result = await response.json();
+    if (result.error) {
+      // Handle the error
+      console.error(result.error);
+    } else {
+      setResult(result.response);
+      setTokens(result.tokens);
     }
-  };
+  } catch (error) {
+    console.error('Failed to submit the prompt', error);
+  }
+};
 
   return (
     <div className="mt-12">

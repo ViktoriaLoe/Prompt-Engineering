@@ -38,21 +38,24 @@ def get_all_data():
         return jsonify({"error": str(e)}), 500
     
 # LLM client
-llm = AzureChatOpenAI(
-    openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-    azure_deployment=os.getenv("AZURE_OPENAI_GPT4O_DEPLOYMENT_NAME"),
-    temperature=0,
-)
+def get_llm_client():
+    llm = AzureChatOpenAI(
+        openai_api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
+        azure_deployment=os.getenv("AZURE_OPENAI_GPT4O_DEPLOYMENT_NAME"),
+        temperature=0,
+    )
+    return llm
 
 # Support functions
 def call_OpenAI(prompt, data):
-    # print("running with prompt", prompt_name)
+    print("running with prompt", prompt, data)
+    llm = get_llm_client()
     result = llm.invoke(prompt, data)
-    tokens = result.response_metadata["token_usage"] 
-    return result.content, tokens
+    print("got result", result)
+    # tokens = result.response_metadata["token_usage"] 
+    return result
 
 
-# Routes
 @app.route('/submit_prompt', methods=['POST'])
 def submit_prompt():
     """
@@ -71,7 +74,7 @@ def submit_prompt():
 
         # Call OpenAI with the provided prompt and data
         response, tokens = call_OpenAI(prompt, input_data)
-
+        print("got result", response, tokens)
         if not response:
             return jsonify({'error': 'Failed to get response from OpenAI'}), 500
 
