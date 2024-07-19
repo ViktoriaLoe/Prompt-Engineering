@@ -3,7 +3,6 @@ import os
 from langchain_openai import AzureChatOpenAI
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
 from database import get_database
 
 
@@ -13,9 +12,11 @@ load_dotenv(find_dotenv())
 app = Flask(__name__)
 CORS(app) 
 
+
 # GET DATA FROM DATABASE
 @app.route('/get-all-data', methods=['GET'])
 def get_all_data():
+    print("Trying to get all data", collection_name)
     try:
         # Fetch all documents in the collection
         database_name = request.args.get('database_name')
@@ -25,13 +26,14 @@ def get_all_data():
             return jsonify({"error": "Missing database_name or collection_name parameter"}), 400
 
         users_collection = get_database(database_name, collection_name)
-
+        print("trying to get", users_collection, database_name, collection_name)
         users_collection = get_database(database_name, collection_name)
         cursor = users_collection.find({})
         data = []
         for document in cursor:
             document['_id'] = str(document['_id'])  # Convert ObjectId to string for JSON serialization
             data.append(document)
+        print("Data fetched successfully!", data, flush=True)
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

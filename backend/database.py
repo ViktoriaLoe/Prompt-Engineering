@@ -18,6 +18,7 @@ def close_connection():
     client.close()
 
 def get_database(database_name, collection_name):
+    print(collection_name)
     db = client[database_name]
     users_collection = db[collection_name]
     return users_collection

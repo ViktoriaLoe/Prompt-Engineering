@@ -5,10 +5,10 @@ const Input = () => {
   const { mockdata, setMockdata } = useAppContext();
   
   return (
-    <div>
+    <div >
       <h1 className="text-2xl font-bold mb-4">Input data</h1>
       <textarea
-        className="textarea textarea-bordered w-full h-80"
+        className="placeholder-base-200 bg-primary textarea textarea-bordered w-full h-80 text-base-100"
         placeholder="Velg data til å kjøre prompten på"
         value={mockdata.data}
         onChange={(e) => setMockdata({ ...mockdata, data: e.target.value })}

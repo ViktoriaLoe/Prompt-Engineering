@@ -40,18 +40,29 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchPrompts = async () => {
-      const response = await fetch("/api/get_prompts");
-      const data = await response.json();
-      setAllPrompts(data);
+      try {
+        console.log("Fetching prompts data");
+        const response = await fetch("/api/get_prompts");
+        if (!response.ok) {
+          throw new Error("Failed to fetch prompt data");
+        }
+        const data: prompt[] = await response.json();
+        console.log("Fetched prompts data:", data);
+        setAllPrompts(data);
+      } catch (error) {
+        console.error("Error fetching mock data:", error);
+      }
     };
 
     const fetchMockdata = async () => {
       try {
+        console.log("Fetching mock data");
         const response = await fetch("/api/get_mockdata");
         if (!response.ok) {
           throw new Error("Failed to fetch mock data");
         }
-        const data = await response.json();
+        const data: mockdata[] = await response.json();
+        console.log("Fetched mock data:", data);
         setAllMockdata(data);
       } catch (error) {
         console.error("Error fetching mock data:", error);

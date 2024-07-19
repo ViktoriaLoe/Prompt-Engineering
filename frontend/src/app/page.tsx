@@ -50,7 +50,7 @@ const Home = () => {
               <Input />
             </div>
           </div>
-          <button className="btn btn-primary" onClick={handleSubmit}>
+          <button className="btn btn-primary text-base-100" onClick={handleSubmit}>
             Submit prompt
           </button>
           {result && (

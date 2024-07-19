@@ -5,7 +5,7 @@ import { prompt } from "../../../../types";
 
 const PromptList = () => {
   const { allPrompts, setPrompt, prompt } = useAppContext();
-
+  console.log()
   return (
     <GenericList
       title="Prompts"
