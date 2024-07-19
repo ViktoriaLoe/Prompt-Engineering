@@ -4,7 +4,7 @@ from langchain_openai import AzureChatOpenAI
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from backend.database import get_database
+from database import get_database
 
 
 load_dotenv(find_dotenv())

@@ -12,6 +12,7 @@ export interface prompt {
 }
 
 export interface mockdata {
-    mockdataName: string;
-    mockdataText: string;
+    _id: string;
+    name: string;
+    data: string;
 }

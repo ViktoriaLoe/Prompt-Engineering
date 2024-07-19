@@ -34,7 +34,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [prompt, setPrompt] = useState<prompt>({ promptName: "", promptText: "" });
   const [result, setResult] = useState("");
   const [allPrompts, setAllPrompts] = useState<prompt[]>([]);
-  const [mockdata, setMockdata] = useState<mockdata>({ mockdataName: "", mockdataText: "" });
+  const [mockdata, setMockdata] = useState<mockdata>({ _id: "", name: "", data: "" });
   const [allMockdata, setAllMockdata] = useState<mockdata[]>([]);
   const [tokens, setTokens] = useState<tokens | null>(null);
 
@@ -46,9 +46,16 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const fetchMockdata = async () => {
-      const response = await fetch("/api/get_mockdata");
-      const data = await response.json();
-      setAllMockdata(data);
+      try {
+        const response = await fetch("/api/get_mockdata");
+        if (!response.ok) {
+          throw new Error("Failed to fetch mock data");
+        }
+        const data = await response.json();
+        setAllMockdata(data);
+      } catch (error) {
+        console.error("Error fetching mock data:", error);
+      }
     };
 
     fetchPrompts();

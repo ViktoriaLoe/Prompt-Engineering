@@ -36,13 +36,13 @@ const Home = () => {
   return (
     <div className="mt-12">
       <div className="flex flex-col lg:flex-row gap-4">
-        <div className="w-full lg:w-1/6">
+        <div className="w-full lg:w-1/4">
           <PromptList />
           <DataList />
         </div>
-        <div className="flex-1 lg:w-5/6 space-y-4">
-          <h3 className="text-4xl font-bold">Prompt Engineering Tool</h3>
-          <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex-1 lg:w-5/6 space-y-4 ml-2">
+          <h3 className="text-6xl font-bold underline">Prompt Engineering Tool</h3>
+          <div className="flex flex-col lg:flex-row gap-4 pt-4">
             <div className="flex-1">
               <PromptTextArea />
             </div>
