@@ -1,12 +1,12 @@
 "use client";
 import Input from "./components/Input";
 import PromptTextArea from "./components/PromptTextArea";
-import PromptList from "./components/PromptList";
+import PromptList from "./components/List/PromptList";
 import ResultDisplay from "./components/ResultDisplay";
 import TokenInfo from "./components/TokenInfo";
 import { useAppContext } from "./context/AppContext";
 import { tokens } from "../../types";
-import DataList from "./components/DataList";
+import DataList from "./components/List/DataList";
 
 const Home = () => {
   const { application, prompt, result, setResult, setTokens } = useAppContext();

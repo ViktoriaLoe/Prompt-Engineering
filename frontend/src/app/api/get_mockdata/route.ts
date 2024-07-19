@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    const database_name = 'prompt_engineering_test'; // Replace with your database name
-    const collection_name = 'mockdata'; // Replace with your collection name
+    const database_name = process.env.DATABASE_NAME;
+    const collection_name =  process.env.COLLECTION_NAME_DATA;
 
     const response = await fetch(`http://127.0.0.1:5000/get-all-data?database_name=${database_name}&collection_name=${collection_name}`);
     if (!response.ok) {

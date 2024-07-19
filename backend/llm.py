@@ -26,12 +26,12 @@ def get_all_data():
 
         users_collection = get_database(database_name, collection_name)
 
-        cursor = users_collection.find({}, {"_id": 1, "name": 1, "data": 1})
+        users_collection = get_database(database_name, collection_name)
+        cursor = users_collection.find({})
         data = []
         for document in cursor:
             document['_id'] = str(document['_id'])  # Convert ObjectId to string for JSON serialization
             data.append(document)
-        print(jsonify(data))
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
