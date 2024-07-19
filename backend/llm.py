@@ -16,7 +16,6 @@ CORS(app)
 # GET DATA FROM DATABASE
 @app.route('/get-all-data', methods=['GET'])
 def get_all_data():
-    print("Trying to get all data", collection_name)
     try:
         # Fetch all documents in the collection
         database_name = request.args.get('database_name')
@@ -84,4 +83,4 @@ def submit_prompt():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='localhost', port=1234)
