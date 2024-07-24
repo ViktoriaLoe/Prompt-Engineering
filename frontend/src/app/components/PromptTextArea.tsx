@@ -1,5 +1,4 @@
 import { useAppContext } from "../context/AppContext";
-import "daisyui/dist/full.css";
 
 const PromptTextArea = () => {
   const { prompt, setPrompt } = useAppContext();
@@ -14,13 +13,6 @@ const PromptTextArea = () => {
           value={prompt.promptText}
           onChange={(e) => setPrompt({ ...prompt, promptText: e.target.value })}
         />
-        {/* <input
-        type="text"
-        className="input input-bordered"
-        placeholder="New Prompt Name"
-        value={prompt.promptName}
-        onChange={(e) => setPrompt({ ...prompt, promptName: e.target.value })}
-      /> */}
       </div>
     </div>
   );

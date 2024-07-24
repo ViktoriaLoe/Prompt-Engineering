@@ -13,8 +13,25 @@ app = Flask(__name__)
 CORS(app) 
 
 
+@app.route('/save_data', methods=['GET'])
+def save_data():
+    try:
+        database_name = request.json.get('database_name')
+        collection_name = request.json.get('collection_name')
+        data = request.json.get('data')
+
+        if not database_name or not collection_name or not data :
+            return jsonify({"error": "Missing database_name or collection_name parameter or data"}), 400
+        
+        collection = get_database(database_name, collection_name)
+        
+        collection.insert_one(data)
+        return jsonify({"message": "Data saved successfully"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 # GET DATA FROM DATABASE
-@app.route('/get-all-data', methods=['GET'])
+@app.route('/get_all_data', methods=['GET'])
 def get_all_data():
     try:
         # Fetch all documents in the collection
@@ -48,12 +65,10 @@ def get_llm_client():
 
 # Support functions
 def call_OpenAI(prompt, data):
-    print("running with prompt", prompt, data)
     llm = get_llm_client()
-    result = llm.invoke(prompt, data)
-    print("got result", result)
-    # tokens = result.response_metadata["token_usage"] 
-    return result
+    result = llm.invoke(prompt + "context:" + data)
+    tokens = result.response_metadata["token_usage"] 
+    return result.content, tokens
 
 
 @app.route('/submit_prompt', methods=['POST'])

@@ -1,5 +1,4 @@
 import { useAppContext } from "../context/AppContext";
-import "daisyui/dist/full.css";
 
 const Input = () => {
   const { mockdata, setMockdata } = useAppContext();

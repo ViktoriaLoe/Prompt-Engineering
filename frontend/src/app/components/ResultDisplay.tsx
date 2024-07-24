@@ -1,5 +1,4 @@
 import { useAppContext } from '../context/AppContext';
-import 'daisyui/dist/full.css';
 
 // Inital display based on previous program
 const ResultDisplay = () => {

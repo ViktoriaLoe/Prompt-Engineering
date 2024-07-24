@@ -7,6 +7,7 @@ import TokenInfo from "./components/TokenInfo";
 import { useAppContext } from "./context/AppContext";
 import { tokens } from "../../types";
 import DataList from "./components/List/DataList";
+import SavePrompt from "./components/SavePrompt";
 
 const Home = () => {
   const { mockdata, prompt, result, setResult, setTokens } = useAppContext();
@@ -54,6 +55,7 @@ const handleSubmit = async () => {
           <button className="btn btn-primary text-base-100" onClick={handleSubmit}>
             Submit prompt
           </button>
+          <SavePrompt />
           {result && (
             <div className="mt-4">
               <ResultDisplay />

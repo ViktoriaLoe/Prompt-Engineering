@@ -23,19 +23,7 @@ def get_database(database_name, collection_name):
     users_collection = db[collection_name]
     return users_collection
     
-# Fetch and print the names of all users
-def get_user_names():
-    try:
-        users = users_collection.find({}, {"name": 1, "_id": 0})
-        user_names = [user["name"] for user in users]
-        print("User Names:", user_names)
-        return user_names
-    except Exception as e:
-        print("An error occurred while fetching user names:", e)
-        return []
-
-# Add a new user
-def add_new_mockdata(user_id, name, data):
+def save_data(user_id, name, data):
     try:
         new_user = {
             "_id": user_id,
@@ -47,8 +35,3 @@ def add_new_mockdata(user_id, name, data):
     except Exception as e:
         print("An error occurred while adding a new user:", e)
 
-# Fetch and print user names
-# get_user_names()
-
-# Add a new user
-# add_new_mockdata("59b99db4cfa9a34dcd7885b7", "Data1", "I want to go to school")

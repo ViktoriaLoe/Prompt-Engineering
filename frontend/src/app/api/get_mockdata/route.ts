@@ -6,7 +6,7 @@ export async function GET() {
     const collection_name =  process.env.COLLECTION_NAME_DATA;
 
     console.log("names:", collection_name, database_name);
-    const response = await fetch(`http://localhost:1234/get-all-data?database_name=${database_name}&collection_name=${collection_name}`);
+    const response = await fetch(`http://localhost:1234/get_all_data?database_name=${database_name}&collection_name=${collection_name}`);
     if (!response.ok) {
       throw new Error(`Error fetching data: ${response.statusText}`);
     }
