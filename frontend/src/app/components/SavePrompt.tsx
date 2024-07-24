@@ -19,8 +19,10 @@ const SavePrompt = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ promptText: newPrompt.promptText, promptName: newPrompt.promptName }),
+        body: JSON.stringify({ 
+            data: newPrompt }),
       });
+
 
       const result = await response.json();
       if (result.error) {

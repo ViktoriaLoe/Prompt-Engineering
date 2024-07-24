@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing database_name, collection_name, or data parameter' }, { status: 400 });
     }
 
-    const response = await fetch('http://localhost:1234/save-data', {
+    const response = await fetch('http://localhost:1234/save_data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

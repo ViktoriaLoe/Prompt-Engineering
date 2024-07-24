@@ -13,8 +13,9 @@ app = Flask(__name__)
 CORS(app) 
 
 
-@app.route('/save_data', methods=['GET'])
+@app.route('/save_data', methods=['POST'])
 def save_data():
+    print("saving data")
     try:
         database_name = request.json.get('database_name')
         collection_name = request.json.get('collection_name')
@@ -43,7 +44,6 @@ def get_all_data():
 
         users_collection = get_database(database_name, collection_name)
         print("trying to get", users_collection, database_name, collection_name)
-        users_collection = get_database(database_name, collection_name)
         cursor = users_collection.find({})
         data = []
         for document in cursor:
