@@ -3,20 +3,21 @@ import Input from "./components/Input";
 import PromptTextArea from "./components/PromptTextArea";
 import PromptList from "./components/List/PromptList";
 import ResultDisplay from "./components/ResultDisplay";
-import TokenInfo from "./components/TokenInfo";
 import { useAppContext } from "./context/AppContext";
-import { tokens } from "../../types";
+import { result } from "../../types";
 import DataList from "./components/List/DataList";
 import SavePrompt from "./components/SavePrompt";
 import { useState } from "react";
+import SaveResult from "./components/SaveResult";
 
 const Home = () => {
-  const { mockdata, prompt, result, setResult, setTokens } = useAppContext();
+  const { mockdata, prompt, result, setResult } = useAppContext();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const startTime = Date.now();
       const response = await fetch("/api/submit_prompt", {
         method: "POST",
         headers: {
@@ -26,12 +27,23 @@ const Home = () => {
       });
 
       const result = await response.json();
+      const endTime = Date.now();
+      const duration = endTime - startTime;
       if (result.error) {
         // Handle the error
         console.error(result.error);
       } else {
-        setResult(result.response);
-        setTokens(result.tokens);
+        const resultObject: result = {
+          resultText: result.response,
+          duration,
+          tokens: {
+            prompt_tokens: result.tokens.prompt_tokens,
+            completion_tokens: result.tokens.completion_tokens,
+            total_tokens: result.tokens.total_tokens,
+          },
+        };
+        console.log("res", resultObject);
+        setResult(resultObject);
       }
     } catch (error) {
       console.error("Failed to submit the prompt", error);
@@ -57,14 +69,21 @@ const Home = () => {
               <Input />
             </div>
           </div>
-          <button
-            className={`btn btn-primary text-base-100 ${loading ? "btn-disabled" : ""}`}
-            disabled={loading}
-            onClick={handleSubmit}
-          >
-            Submit prompt
-          </button>
           <SavePrompt />
+          <div className="flex">
+            <button
+              className={`btn btn-primary mr-2 text-base-100 ${loading ? "btn-disabled" : ""}`}
+              disabled={loading}
+              onClick={handleSubmit}
+            >
+              Submit prompt
+            </button>
+            {result && !loading && (
+              <div>
+                <SaveResult />
+              </div>
+            )}
+          </div>
           {loading ? (
             <div className="mt-8 flex justify-center items-center">
               <div className="loading loading-spinner"></div> {/* DaisyUI loading spinner */}
@@ -73,7 +92,6 @@ const Home = () => {
             result && (
               <div className="mt-4">
                 <ResultDisplay />
-                <TokenInfo />
               </div>
             )
           )}

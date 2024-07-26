@@ -27,6 +27,7 @@ def call_OpenAI(prompt, data):
     llm = get_llm_client()
     result = llm.invoke(prompt + "context:" + data)
     tokens = result.response_metadata["token_usage"] 
+    print(result)
     return result.content, tokens
 
 
@@ -48,7 +49,6 @@ def submit_prompt():
 
         # Call OpenAI with the provided prompt and data
         response, tokens = call_OpenAI(prompt, input_data)
-        print("got result", response, tokens)
         if not response:
             return jsonify({'error': 'Failed to get response from OpenAI'}), 500
 

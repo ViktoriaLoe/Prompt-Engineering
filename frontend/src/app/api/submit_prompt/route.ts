@@ -7,7 +7,6 @@ export async function POST(req: Request) {
     if (!prompt || !mockdata) {
       return NextResponse.json({ error: "Prompt and mockdata are required" }, { status: 400 });
     }
-
     const response = await fetch("http://localhost:1234/submit_prompt", {
       method: "POST",
       headers: {

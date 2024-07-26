@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { tokens, prompt, mockdata } from "../../../types";
+import { tokens, prompt, mockdata, result } from "../../../types";
 
 interface AppContextProps {
   application: string;
@@ -13,10 +13,8 @@ interface AppContextProps {
   setMockdata: (value: mockdata) => void;
   allMockdata: mockdata[];
   setAllMockdata: (value: mockdata[]) => void;
-  result: string;
-  setResult: (value: string) => void;
-  tokens: tokens | null;
-  setTokens: (value: tokens) => void;
+  result: result | null;
+  setResult: (value: result) => void;
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined);
@@ -32,11 +30,10 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [application, setApplication] = useState("");
   const [prompt, setPrompt] = useState<prompt>({ promptName: "", promptText: "" });
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState<result | null>(null);
   const [allPrompts, setAllPrompts] = useState<prompt[]>([]);
   const [mockdata, setMockdata] = useState<mockdata>({ _id: "", name: "", data: "" });
   const [allMockdata, setAllMockdata] = useState<mockdata[]>([]);
-  const [tokens, setTokens] = useState<tokens | null>(null);
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -54,8 +51,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         console.error("Error fetching mock data:", error);
       }
     };
-
-    fetchAllData();
+    if (allPrompts === undefined) {
+    }
+      fetchAllData();
   }, []);
 
   return (
@@ -73,8 +71,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setAllMockdata,
         result,
         setResult,
-        tokens,
-        setTokens,
       }}
     >
       {children}
