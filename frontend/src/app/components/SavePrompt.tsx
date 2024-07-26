@@ -10,10 +10,11 @@ const SavePrompt = () => {
   const handleSave = async () => {
     const newPrompt = {
       ...prompt,
-      promptName: promptName || prompt.promptName,
+      promptName: promptName 
     };
 
     try {
+      console.log(newPrompt)
       const response = await fetch("/api/save_data", {
         method: "POST",
         headers: {

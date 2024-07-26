@@ -8,32 +8,37 @@ import { useAppContext } from "./context/AppContext";
 import { tokens } from "../../types";
 import DataList from "./components/List/DataList";
 import SavePrompt from "./components/SavePrompt";
+import { useState } from "react";
 
 const Home = () => {
   const { mockdata, prompt, result, setResult, setTokens } = useAppContext();
+  const [loading, setLoading] = useState(false);
 
-const handleSubmit = async () => {
-  try {
-    const response = await fetch("/api/submit_prompt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ prompt, mockdata }),
-    });
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/submit_prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt, mockdata }),
+      });
 
-    const result = await response.json();
-    if (result.error) {
-      // Handle the error
-      console.error(result.error);
-    } else {
-      setResult(result.response);
-      setTokens(result.tokens);
+      const result = await response.json();
+      if (result.error) {
+        // Handle the error
+        console.error(result.error);
+      } else {
+        setResult(result.response);
+        setTokens(result.tokens);
+      }
+    } catch (error) {
+      console.error("Failed to submit the prompt", error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error('Failed to submit the prompt', error);
-  }
-};
+  };
 
   return (
     <div className="mt-12">
@@ -52,15 +57,25 @@ const handleSubmit = async () => {
               <Input />
             </div>
           </div>
-          <button className="btn btn-primary text-base-100" onClick={handleSubmit}>
+          <button
+            className={`btn btn-primary text-base-100 ${loading ? "btn-disabled" : ""}`}
+            disabled={loading}
+            onClick={handleSubmit}
+          >
             Submit prompt
           </button>
           <SavePrompt />
-          {result && (
-            <div className="mt-4">
-              <ResultDisplay />
-              <TokenInfo />
+          {loading ? (
+            <div className="mt-8 flex justify-center items-center">
+              <div className="loading loading-spinner"></div> {/* DaisyUI loading spinner */}
             </div>
+          ) : (
+            result && (
+              <div className="mt-4">
+                <ResultDisplay />
+                <TokenInfo />
+              </div>
+            )
           )}
         </div>
       </div>

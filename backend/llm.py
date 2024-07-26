@@ -13,49 +13,6 @@ app = Flask(__name__)
 CORS(app) 
 
 
-# @app.route('/save_data', methods=['POST'])
-# def save_data():
-#     print("saving data")
-#     try:
-#         database_name = request.json.get('database_name')
-#         collection_name = request.json.get('collection_name')
-#         data = request.json.get('data')
-
-#         if not database_name or not collection_name or not data :
-#             return jsonify({"error": "Missing database_name or collection_name parameter or data"}), 400
-        
-#         collection = get_database(database_name, collection_name)
-#         collection.insert_one(data)
-#         print(data,"collection", collection)    
-#         return jsonify({"message": "Data saved successfully"}), 201
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
-    
-# # GET DATA FROM DATABASE
-# @app.route('/get-all-data', methods=['GET'])
-# def get_all_data():
-#     print("getting all data")
-#     try:
-#         print("getting data", collection_name)
-#         # Fetch all documents in the collection
-#         database_name = request.args.get('database_name')
-#         collection_name = request.args.get('collection_name')
-
-#         if not database_name or not collection_name:
-#             return jsonify({"error": "Missing database_name or collection_name parameter"}), 400
-
-#         users_collection = get_database(database_name, collection_name)
-#         print("trying to get", users_collection, database_name, collection_name)
-#         cursor = users_collection.find({})
-#         data = []
-#         for document in cursor:
-#             document['_id'] = str(document['_id'])  # Convert ObjectId to string for JSON serialization
-#             data.append(document)
-#         print("Data fetched successfully!", data, flush=True)
-#         return jsonify(data), 200
-#     except Exception as e:
-#         return jsonify({"error": str(e)}), 500
-    
 # LLM client
 def get_llm_client():
     llm = AzureChatOpenAI(
