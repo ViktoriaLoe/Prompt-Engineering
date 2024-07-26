@@ -26,7 +26,7 @@ const GenericList = <T,>({
       <div className="text-base-100 ">
         <div className="accordion">
           {items &&
-            items.map((item) => (
+            items?.map((item) => (
               <div
                 key={itemKey(item)}
                 className="bg-primary collapse collapse-arrow border border-base-300 rounded-box"
