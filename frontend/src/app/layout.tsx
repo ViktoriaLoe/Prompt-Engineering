@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" data-theme="cyberpunk">
+    <html lang="en" data-theme="valentine">
       <head>
         <title>Prompt Engineering</title>
       </head>

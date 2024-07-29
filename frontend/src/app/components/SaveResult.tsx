@@ -2,7 +2,7 @@ import { useAppContext } from '../context/AppContext'; // Adjust the import acco
 import { useState } from 'react';
 
 const SaveResult = () => {
-  const { result, tokens } = useAppContext();
+  const { result } = useAppContext();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -15,7 +15,7 @@ const SaveResult = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ result, tokens }),
+        body: JSON.stringify({ result }),
       });
 
       const data = await response.json();

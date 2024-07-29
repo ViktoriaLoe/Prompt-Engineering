@@ -29,7 +29,7 @@ const GenericList = <T,>({
             items?.map((item) => (
               <div
                 key={itemKey(item)}
-                className="bg-primary collapse collapse-arrow border border-base-300 rounded-box"
+                className="bg-primary collapse border border-base-300 rounded-box"
               >
                 <input
                   type="radio"
@@ -42,16 +42,18 @@ const GenericList = <T,>({
                 </div>
                 <div className="collapse-content text-sm flex justify-between items-center">
                   <p>{itemContent(item)}</p>
+                   <div className="flex justify-end mt-2">
                   <button
                     className={`btn-circle border btn-xs ${
                       selectedItem && itemKey(selectedItem) === itemKey(item)
                         ? "bg-light-green text-light-green border-light-green"
-                        : "bg-gray-300 text-transparent"
+                        : "bg-light-green text-transparent"
                     }`}
                     onClick={() => onItemSelect(item)}
                   >
                     {selectedItem && itemKey(selectedItem) === itemKey(item) ? "X" : ""}
                   </button>
+                </div>
                 </div>
               </div>
             ))}

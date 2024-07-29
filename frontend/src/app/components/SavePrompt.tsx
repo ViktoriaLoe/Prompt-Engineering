@@ -48,7 +48,7 @@ const SavePrompt = () => {
         className="input input-bordered"
       />
       <button className="btn btn-primary" onClick={handleSave}>
-        Save Prompt
+        Save Prompt to Database 
       </button>
     </div>
   );
